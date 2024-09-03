@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "319670748140",
+    "project_id": "milk-control-a",
+    "storage_bucket": "milk-control-a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319670748140:android:0e83e60d74aac12b4436c9",
+        "android_client_info": {
+          "package_name": "br.com.milkcontrolapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHcw-2EiaOSy1Zi5ZVH0q6d9XkSLKRdQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319670748140:android:1fbd241478f5b6f14436c9",
+        "android_client_info": {
+          "package_name": "br.com.milkcontrolapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHcw-2EiaOSy1Zi5ZVH0q6d9XkSLKRdQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
