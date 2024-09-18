@@ -45,6 +45,8 @@ dependencies:
   flutter_libphonenumber: ^2.3.3
   easy_mask: ^2.0.1
   firebase_auth: ^4.16.0
+  cloud_firestore: ^4.17.5
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

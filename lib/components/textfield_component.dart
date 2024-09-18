@@ -22,6 +22,7 @@ class TextFieldComponent extends StatelessWidget {
   final bool obscureText;
   final GestureTapCallback? onTap;
   final Function(String)? onFieldSubmitted;
+  final String? errorText;
 
   const TextFieldComponent({
     super.key,
@@ -44,7 +45,8 @@ class TextFieldComponent extends StatelessWidget {
     this.suffixIcon,
     this.hintText,
     this.onTap,
-    this.onFieldSubmitted
+    this.onFieldSubmitted,
+    this.errorText
   });
 
   @override
@@ -53,7 +55,7 @@ class TextFieldComponent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       child: Card(
         elevation: 0,
-        // color: Colors.transparent,
+        color: Colors.transparent,
         child: TextFormField(
           initialValue: initialValue,
           readOnly: readOnly,
@@ -66,6 +68,7 @@ class TextFieldComponent extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
+              errorText: errorText,
               errorStyle: const TextStyle(fontSize: 12.0),
               errorMaxLines: 1,
               enabledBorder: OutlineInputBorder(
@@ -100,6 +103,7 @@ class TextFieldComponent extends StatelessWidget {
           validator: validator,
           inputFormatters: inputFormatters,
           onFieldSubmitted: onFieldSubmitted,
+
         ),
       ),
     );

@@ -1,12 +1,13 @@
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:milkcontrolapp/components/appbar_component.dart';
 import 'package:milkcontrolapp/components/elevatedbutton_component.dart';
 import 'package:milkcontrolapp/components/textfield_component.dart';
 import 'package:milkcontrolapp/pages/login_page.dart';
 import 'package:milkcontrolapp/services/auth_service.dart';
 import 'package:page_transition/page_transition.dart';
+
+import '../components/snackbar_component.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -29,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
-  void submitRegister() {
+  submitRegister() {
     final isValid = _registerKey.currentState!.validate();
 
     if (!isValid) {
@@ -38,11 +39,24 @@ class _RegisterPageState extends State<RegisterPage> {
 
     authService.register(
         email: _emailController.text,
-        nome: _nameController.text,
-        phone: _phoneController.text,
         password: _passwordController.text,
-    );
+    ).then((String? erro){
+      if(erro != null){
+        showSnackBar(context: context, message: erro, backgroundColor: Colors.red);
+      }else{
+        showSnackBar(context: context, message: 'Conta criada com sucesso!', backgroundColor: Colors.green);
 
+        Navigator.push(
+          context,
+          PageTransition(
+            child: const LoginPage(),
+            childCurrent: const RegisterPage(),
+            type: PageTransitionType.fade,
+          ),
+        );
+      }
+    }
+    );
   }
 
   @override
@@ -94,11 +108,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
 
                     ),
-                    // TextFieldComponent(
-                    //   hintText: 'CPF',
-                    //   filled: true,
-                    //   fillColor: Colors.white,
-                    // ),
                     TextFieldComponent(
                       controller: _phoneController,
                       hintText: 'Telefone',
@@ -144,7 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       fillColor: Colors.white,
                       validator: (value) {
                         if (value == null || value.length < 4) {
-                          return "Insira uma senha válida.";
+                          return "Insira uma senha com mais caracteres.";
                         }
                         return null;
                       },
@@ -181,6 +190,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         if (value != _passwordController.text) {
                           return "As senhas devem ser iguais.";
                         }
+                        return null;
 
                       },
                       keyboardType: TextInputType.text,
@@ -214,8 +224,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 onPressed: () => submitRegister(),
                 width: 200,
                 text: 'Criar conta',
+                colorText: Colors.white,
                 color: const Color(0xff001F3D),
               ),
+              const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -227,6 +239,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         fontWeight: FontWeight.bold),
                   ),
                   TextButton(
+
                     onPressed: () => Navigator.push(
                       context,
                       PageTransition(
@@ -234,15 +247,12 @@ class _RegisterPageState extends State<RegisterPage> {
                         childCurrent: const RegisterPage(),
                         type: PageTransitionType.fade,
                       ),
-                    ),
-                    child: const Text(
-                      'Entrar',
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xff001F3D),
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                    ), child: const Text('Entrar',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xff001F3D),
+                        fontWeight: FontWeight.bold),
+                  ),),
                 ],
               ),
             ],

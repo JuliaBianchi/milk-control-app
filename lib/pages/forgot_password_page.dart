@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:milkcontrolapp/components/appbar_component.dart';
 import 'package:milkcontrolapp/components/elevatedbutton_component.dart';
-import 'package:milkcontrolapp/components/textfield_code_component.dart';
+import 'package:milkcontrolapp/components/snackbar_component.dart';
 import 'package:milkcontrolapp/components/textfield_component.dart';
+import '../services/auth_service.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -13,152 +14,96 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  Future<void> _showVerificationCodeDialog(BuildContext context) async {
-    return showDialog(
+  _showVerificationCodeDialog() {
+    showDialog(
       barrierDismissible: false,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       barrierColor: Colors.black45,
       context: context,
-      builder: (BuildContext context) {
-        return Dialog(
+      builder: (context) {
+        return AlertDialog(
           elevation: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: Container(
-              height: 380,
-              width: 600,
-              child: Column(
-                children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Código de verificação',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
+          title: const Text(
+            'Confirmação de e-mail',
+            style: TextStyle(
+                color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          content: SizedBox(
+            height: 100,
+            child: Column(
+              children: [
+                const Text(
+                  'Por favor, verifique se o e-mail informado foi digitado corretamente:',
+                  style: TextStyle(
+                    color: Color(0xff4F4F4F),
+                    fontSize: 15,
                   ),
-                  const SizedBox(height: 10),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Por favor, escreva o código de verificação \nque foi enviado pelo seu e-mail.',
-                        style: TextStyle(
-                          color: Color(0xff4F4F4F),
-                          fontSize: 12,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
+                  textAlign: TextAlign.start,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  _emailController.text,
+                  style: const TextStyle(
+                    color: Color(0xff4F4F4F),
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Container(
-                    height: 200,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextFieldCodeComponent(
-                          labelText: '0',
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1),
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                        ),
-                        TextFieldCodeComponent(
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1),
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                        ),
-                        TextFieldCodeComponent(
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                        ),
-                        TextFieldCodeComponent(
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Reenviar código depois de: 2:00',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: null,
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff001F3D),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            )),
-                        child: const Text(
-                          'Reenviar',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xffDF4F4F),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            )),
-                        child: const Text(
-                          'Cancelar',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                authService
+                    .forgotPassword(email: _emailController.text.trim())
+                    .then((String? erro) {
+
+                      showSnackBar(context: context, message: erro ?? 'Se o e-mail estiver cadastrado, um link de redefinição de senha será enviado.', backgroundColor: const Color(0xff6699CC));
+                      _emailController.clear();
+
+                      Navigator.pop(context);
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green.shade400,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  )),
+              child: const Text(
+                'Confirmar',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(width: 15),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red.shade400,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  )),
+              child: const Text(
+                'Voltar',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         );
       },
     );
+
   }
+
+  final authService = AuthService();
+
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +128,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      ' Não se preocupe, estamos aqui para ajudar! \n Por favor, digite abaixo o seu CPF ou e-mail cadastrado para receber o código de verificação.',
+                      ' Não se preocupe, estamos aqui para ajudar! \n Por favor, digite abaixo o seu e-mail cadastrado para receber as informações de redefinição de senha.',
                       style: TextStyle(
                         color: Color(0xff4F4F4F),
                         fontSize: 13,
@@ -194,15 +139,39 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
               ),
               const SizedBox(height: 50),
-              const Form(
+              Form(
                 child: TextFieldComponent(
-                  hintText: 'Digite aqui o CPF ou e-mail cadastrado',
+                  controller: _emailController,
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      FontAwesomeIcons.solidEnvelope,
+                      size: 20,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                  hintText: 'E-mail',
+                  validator: (value) {
+                    if (value == null || value == "") {
+                      return "O valor de e-mail deve ser preenchido";
+                    }
+
+                    if (!value.contains("@") ||
+                        !value.contains(".") ||
+                        value.length < 4) {
+                      return "O valor do e-mail deve ser válido";
+                    }
+                    return null;
+                  },
                 ),
               ),
               ElevatedButtonComponent(
-                onPressed: () => _showVerificationCodeDialog(context),
+                onPressed: () {
+                  _showVerificationCodeDialog();
+                },
                 width: 200,
                 text: 'Enviar código',
+                colorText: Colors.white,
                 color: const Color(0xff1C6E8C),
               )
             ],
