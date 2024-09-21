@@ -9,10 +9,14 @@ class UserModel {
     required this.phone,
   });
 
-  UserModel.fromMap(Map<String, dynamic> map)
-      : uid = map['uid'],
-        name = map['name'],
-        phone = map['phone'];
+  // Método para criar um objeto User a partir de um Map (como os dados do Firestore)
+  factory UserModel.fromMap(Map<String, dynamic> data, String documentId) {
+    return UserModel(
+      uid: documentId, // O UID é o ID do documento
+      name: data['nome'] as String?,
+      phone: data['phone'] as String?,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {

@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:milkcontrolapp/components/card_home_component.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:milkcontrolapp/components/menu_drawer.dart';
+import 'package:milkcontrolapp/models/user.dart';
 import 'package:milkcontrolapp/pages/cadastro_prenhez.dart';
 import 'package:milkcontrolapp/pages/login_page.dart';
 import 'animal_registration.dart';
+import 'cadastro_antibiotico.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,8 +20,10 @@ class HomePage extends StatefulWidget {
 class _HomeDrawerState extends State<HomePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+
   @override
   void initState() {
+
     super.initState();
   }
 
@@ -28,8 +34,8 @@ class _HomeDrawerState extends State<HomePage> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: const Text(
-          'Bem-vindo!',
+        title: Text(
+          'Bem-vindo(a) !',
           style: TextStyle(
               fontWeight: FontWeight.w600, fontSize: 18, color: Colors.white),
         ),
@@ -104,7 +110,7 @@ class _HomeDrawerState extends State<HomePage> {
                       CardHomeComponent(
                           label: 'Cadastrar Antibiótico',
                           icon: FontAwesomeIcons.kitMedical,
-                          child: LoginPage()),
+                          child: CadastroAntibiotico()),
                       CardHomeComponent(
                           label: 'Cadastrar Dieta',
                           icon: FontAwesomeIcons.wheatAwn,

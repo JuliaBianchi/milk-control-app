@@ -33,6 +33,7 @@ class _DatePickerComponentState extends State<DatePickerComponent> {
         controller: dateInputController,
         hintText: 'Selecione a data',
         prefixIcon: Icon(CupertinoIcons.calendar),
+        suffixIcon: Icon(Icons.arrow_drop_down_outlined),
         onTapOutside: (event) => FocusScope.of(context).unfocus(),
         readOnly: true,
         onTap: () async {
