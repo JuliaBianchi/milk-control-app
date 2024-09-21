@@ -62,7 +62,8 @@ class TextFieldComponent extends StatelessWidget {
           controller: controller,
           cursorColor: const Color(0xff001F3D),
           decoration: InputDecoration(
-              hintText: hintText,
+            labelText: hintText,
+              // hintText: hintText,
               hintStyle:  TextStyle(
                 color: Colors.grey.shade600,
                 fontWeight: FontWeight.bold,

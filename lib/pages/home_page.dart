@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:milkcontrolapp/components/card_home_component.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:milkcontrolapp/components/listtile_component.dart';
 import 'package:milkcontrolapp/components/menu_drawer.dart';
+import 'package:milkcontrolapp/pages/cadastro_prenhez.dart';
 import 'package:milkcontrolapp/pages/login_page.dart';
+import 'animal_registration.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,16 +27,15 @@ class _HomeDrawerState extends State<HomePage> {
 
     return Scaffold(
       key: scaffoldKey,
-      // backgroundColor: Color(0xff1C6E8C),
       appBar: AppBar(
         title: const Text(
           'Bem-vindo!',
           style: TextStyle(
               fontWeight: FontWeight.w600, fontSize: 18, color: Colors.white),
         ),
-        toolbarHeight: 86,
+        toolbarHeight: 50,
         elevation: 0,
-        backgroundColor: Color(0xff1C6E8C),
+        backgroundColor: Color(0xff194a7a),
         leading: IconButton(
           icon: const Icon(
             Icons.menu,
@@ -67,12 +66,12 @@ class _HomeDrawerState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: 200,
-                width: 400,
-                child: Card(
-                  color: Color(0xff656563),
-                ),
+              Image.asset(
+                'assets/images/Vector (2).png',
+                height: 120,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+                color: Color(0xff194a7a),
               ),
               const Padding(
                 padding: EdgeInsets.all(30),
@@ -97,11 +96,11 @@ class _HomeDrawerState extends State<HomePage> {
                       CardHomeComponent(
                           label: 'Adicionar Animais',
                           icon: FontAwesomeIcons.plus,
-                          child: LoginPage()),
+                          child: AnimalRegistration()),
                       CardHomeComponent(
                           label: 'Cadastrar Prenhez',
                           icon: FontAwesomeIcons.calendarPlus,
-                          child: LoginPage()),
+                          child: CadastroPrenhez()),
                       CardHomeComponent(
                           label: 'Cadastrar Antibiótico',
                           icon: FontAwesomeIcons.kitMedical,

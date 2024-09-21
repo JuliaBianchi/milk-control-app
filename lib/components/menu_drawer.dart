@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:milkcontrolapp/components/listtile_component.dart';
+import 'package:milkcontrolapp/components/snackbar_component.dart';
 import 'package:milkcontrolapp/components/textfield_component.dart';
+import 'package:milkcontrolapp/pages/animals_page.dart';
 import 'package:milkcontrolapp/pages/login_page.dart';
 import 'package:milkcontrolapp/services/auth_service.dart';
 import 'package:page_transition/page_transition.dart';
@@ -31,20 +35,10 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
           ),
           content: SizedBox(
-            height: 200,
+            height: 150,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 10,),
-                Text(
-                  'Deseja remover a conta com o e-mail $email ?',
-                  style: const TextStyle(
-                    color: Color(0xff4F4F4F),
-                    fontSize: 15,
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-                const SizedBox(height: 5,),
                 const Text(
                   'Para confirmar a remoção da conta, insira sua senha.',
                   style: TextStyle(
@@ -53,6 +47,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                   ),
                   textAlign: TextAlign.start,
                 ),
+                SizedBox(height: 15,),
                 TextFieldComponent(
                   obscureText: true,
                   controller: _passwordController,
@@ -62,8 +57,6 @@ class _MenuDrawerState extends State<MenuDrawer> {
                     size: 20,
                     color: Colors.grey.shade600,
                   ),
-
-
                 ),
               ],
             ),
@@ -74,6 +67,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
               onPressed: () {
                 AuthService().deleteAccount(password: _passwordController.text).then((String? erro){
                   if(erro == null){
+                    showSnackBar(context: context, message: 'Conta excluída!', backgroundColor: Colors.green);
                     Navigator.push(
                       context,
                       PageTransition(
@@ -82,6 +76,9 @@ class _MenuDrawerState extends State<MenuDrawer> {
                         type: PageTransitionType.fade,
                       ),
                     );
+                  }else{
+                    // snackbar / outro dialog / textfield
+                    log(erro);
                   }
                 });
 
@@ -132,7 +129,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
               margin: const EdgeInsets.only(top: 50),
               width: 250,
               child: Image.asset(
-                'lib/assets/logo.png',
+                'assets/images/logo.png',
               ),
             ),
           ],
@@ -156,7 +153,16 @@ class _MenuDrawerState extends State<MenuDrawer> {
                   ListTileComponent(
                       icon: FontAwesomeIcons.cow,
                       label: 'Meus Animais',
-                      onTap: () {}),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                              child: const AnimalsPage(),
+                            childCurrent: const MenuDrawer(),
+                            type: PageTransitionType.fade,
+                          ),
+                        );
+                      }),
                   ListTileComponent(
                       icon: FontAwesomeIcons.chartSimple,
                       label: 'Minhas Dietas',
@@ -177,14 +183,24 @@ class _MenuDrawerState extends State<MenuDrawer> {
                       icon: FontAwesomeIcons.rightToBracket,
                       label: 'Sair',
                       onTap: () {
-                        AuthService().logout();
+                        AuthService().logout().then((_){
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              child: const LoginPage(),
+                              childCurrent: const MenuDrawer(),
+                              type: PageTransitionType.fade,
+                            ),
+                          );
+                        });
                       }),
                   ListTileComponent(
                       icon: FontAwesomeIcons.close,
                       label: 'Deletar conta',
                       onTap: () {
                         showRemoveAccountConfirmation(context: context, email: '');
-                      }),
+                      }
+                      ),
                 ],
               ),
             ),

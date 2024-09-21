@@ -28,9 +28,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
-  submitRegister() {
+  submitRegister(context) {
     final isValid = _registerKey.currentState!.validate();
 
     if (!isValid) {
@@ -38,13 +39,17 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     authService.register(
-        email: _emailController.text,
-        password: _passwordController.text,
-    ).then((String? erro){
-      if(erro != null){
-        showSnackBar(context: context, message: erro, backgroundColor: Colors.red);
-      }else{
-        showSnackBar(context: context, message: 'Conta criada com sucesso!', backgroundColor: Colors.green);
+            email: _emailController.text,
+            password: _passwordController.text,
+            name: _nameController.text,
+            phone: _phoneController.text).then((String? erro) {
+      if (erro != null) {
+        showSnackBar( context: context, message: erro, backgroundColor: Colors.red);
+      } else {
+        showSnackBar(
+            context: context,
+            message: 'Conta criada com sucesso!',
+            backgroundColor: Colors.green);
 
         Navigator.push(
           context,
@@ -55,8 +60,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         );
       }
-    }
-    );
+    });
   }
 
   @override
@@ -98,15 +102,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           return "Esse campo não pode ser vazio.";
                         }
 
-                        if(value.length < 5){
+                        if (value.length < 5) {
                           return "Insira um nome válido.";
                         }
                         return null;
                       },
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
-
-
                     ),
                     TextFieldComponent(
                       controller: _phoneController,
@@ -122,8 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       keyboardType: TextInputType.phone,
                       textInputAction: TextInputAction.next,
                       inputFormatters: [
-                        TextInputMask(
-                            mask: ['\\+ 99 (99) 9 9999-9999'])
+                        TextInputMask(mask: ['\\+ 99 (99) 9 9999-9999'])
                       ],
                     ),
                     TextFieldComponent(
@@ -163,13 +164,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       suffixIcon: IconButton(
                         icon: passwordVisible
                             ? Icon(
-                          Icons.visibility,
-                          color: Colors.grey.shade600,
-                        )
+                                Icons.visibility,
+                                color: Colors.grey.shade600,
+                              )
                             : Icon(
-                          Icons.visibility_off,
-                          color: Colors.grey.shade600,
-                        ),
+                                Icons.visibility_off,
+                                color: Colors.grey.shade600,
+                              ),
                         onPressed: () {
                           setState(() {
                             passwordVisible = !passwordVisible;
@@ -177,7 +178,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                       ),
                     ),
-
                     TextFieldComponent(
                       controller: _confirmPasswordController,
                       hintText: 'Confirmar Senha',
@@ -191,7 +191,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           return "As senhas devem ser iguais.";
                         }
                         return null;
-
                       },
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.done,
@@ -199,13 +198,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       suffixIcon: IconButton(
                         icon: passwordConfirmVisible
                             ? Icon(
-                          Icons.visibility,
-                          color: Colors.grey.shade600,
-                        )
+                                Icons.visibility,
+                                color: Colors.grey.shade600,
+                              )
                             : Icon(
-                          Icons.visibility_off,
-                          color: Colors.grey.shade600,
-                        ),
+                                Icons.visibility_off,
+                                color: Colors.grey.shade600,
+                              ),
                         onPressed: () {
                           setState(() {
                             passwordConfirmVisible = !passwordConfirmVisible;
@@ -213,15 +212,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                       ),
                       onFieldSubmitted: (_) {
-                        submitRegister();
+                        submitRegister(context);
                       },
-
                     ),
                   ],
                 ),
               ),
               ElevatedButtonComponent(
-                onPressed: () => submitRegister(),
+                onPressed: () => submitRegister(context),
                 width: 200,
                 text: 'Criar conta',
                 colorText: Colors.white,
@@ -239,7 +237,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         fontWeight: FontWeight.bold),
                   ),
                   TextButton(
-
                     onPressed: () => Navigator.push(
                       context,
                       PageTransition(
@@ -247,12 +244,15 @@ class _RegisterPageState extends State<RegisterPage> {
                         childCurrent: const RegisterPage(),
                         type: PageTransitionType.fade,
                       ),
-                    ), child: const Text('Entrar',
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xff001F3D),
-                        fontWeight: FontWeight.bold),
-                  ),),
+                    ),
+                    child: const Text(
+                      'Entrar',
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xff001F3D),
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ],
               ),
             ],

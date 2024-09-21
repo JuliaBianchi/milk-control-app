@@ -6,7 +6,6 @@ import 'package:milkcontrolapp/components/textfield_component.dart';
 import 'package:milkcontrolapp/pages/forgot_password_page.dart';
 import 'package:milkcontrolapp/pages/register_page.dart';
 import 'package:page_transition/page_transition.dart';
-
 import '../services/auth_service.dart';
 import 'home_page.dart';
 
@@ -34,23 +33,22 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    String _email = emailController.text;
-    String _password = passwordController.text;
+    authService.login(email: emailController.text.trim(), password: passwordController.text.trim()).then((String? erro){
 
-    authService.login(email: _email, password: _password).then((String? erro){
-      if(erro == null){
-        Navigator.push(
-          context,
-          PageTransition(
-            child: const HomePage(),
-            childCurrent: const LoginPage(),
-            type: PageTransitionType.fade,
-          ),
-        );
-      }else{
-        showSnackBar(context: context, message: erro, backgroundColor: Colors.red);
-      }
-    });
+    if(erro == null){
+      Navigator.push(
+        context,
+        PageTransition(
+          child: const HomePage(),
+          childCurrent: const LoginPage(),
+          type: PageTransitionType.fade,
+        ),
+      );
+    }else{
+      showSnackBar(context: context, message: erro, backgroundColor: Colors.red);
+    }
+    }
+    );
   }
 
   @override
@@ -65,10 +63,9 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Image.asset(
-                  'lib/assets/background-png.png',
+                  'assets/images/background-png.png',
                   height: 500,
                   fit: BoxFit.cover,
-
                 )
               ],
             ),
@@ -118,12 +115,15 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                       onPressed: () {
                         setState(() {
-                          _isObscure  = !_isObscure ;
+                          _isObscure = !_isObscure;
                         });
                       },
                     ),
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.done,
+                    onFieldSubmitted: (_){
+                      login();
+                    },
                   ),
                   ElevatedButtonComponent(
                       text: 'Entrar',
@@ -132,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: const Color(0xff1C6E8C),
                       onPressed: () async {
                         login();
+
                       }),
                   const SizedBox(height: 50),
                   TextButton(
@@ -177,7 +178,6 @@ class _LoginPageState extends State<LoginPage> {
                               color: Color(0xff1C6E8C),
                               fontWeight: FontWeight.bold),
                         ),
-
                       ),
                     ],
                   ),

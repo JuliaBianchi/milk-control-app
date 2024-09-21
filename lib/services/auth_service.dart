@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
@@ -7,6 +8,7 @@ class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<String?> login({required String email, required String password}) async {
+
     try {
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
@@ -19,6 +21,10 @@ class AuthService {
           return 'Senha incorreta';
         case 'invalid-email':
           return 'E-mail ou senha incorretos';
+        case 'too-many-requests':
+          return 'O acesso à conta foi desativado temporariamente por várias tentativas de login falhas. Tente novamente mais tarde.';
+        case 'invalid-credential':
+          return 'E-mail ou senha incorretos';
         case 'channel-error':
           return 'Os campos de e-mail e senha não podem ser vazios';
       }
@@ -27,9 +33,13 @@ class AuthService {
     return null;
   }
 
-  Future<String?> register({required String email, required String password}) async {
+  Future<String?> register({required String email, required String password, required String name, required String phone}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+
+      await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set({
+        'name': name,
+        'phone': phone,});
 
     } on FirebaseAuthException catch (e) {
       switch(e.code){
@@ -39,12 +49,6 @@ class AuthService {
       return e.code;
     }
     return null;
-
-    // criar o usuário
-    // criar o usuário no firestore
-    // fazer o login na aplicação
-    // UserModel userModel = UserModel(email: email, nome: nome, phone: phone, password: password);
-
   }
 
   Future<String?> forgotPassword({required String email}) async {
@@ -62,6 +66,7 @@ class AuthService {
   Future<String?> logout() async {
     try {
       await _firebaseAuth.signOut();
+
     } on FirebaseAuthException catch (e) {
       return e.code;
     }
@@ -70,11 +75,21 @@ class AuthService {
   }
 
   Future<String?> deleteAccount({required String password}) async{
+    DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(_firebaseAuth.currentUser?.uid);
+
     try {
       await _firebaseAuth.signInWithEmailAndPassword(email: _firebaseAuth.currentUser!.email!, password: password);
 
+      await userDoc.delete();
       await _firebaseAuth.currentUser!.delete();
+
     } on FirebaseAuthException catch (e) {
+      switch(e.code) {
+        case 'invalid-credential':
+          return 'E-mail ou senha incorretos';
+        case 'too-many-requests':
+          return 'O acesso à conta foi desativado temporariamente por várias tentativas de login falhas. Tente novamente mais tarde.';
+      }
       return e.code;
     }
     return null;

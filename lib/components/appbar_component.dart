@@ -28,7 +28,7 @@ class AppbarComponent extends StatelessWidget implements PreferredSizeWidget {
           SizedBox(
             width: 325,
             child: Image.asset(
-              'lib/assets/logo.png',
+              'assets/images/logo.png',
             ),
           ),
           const Divider(
