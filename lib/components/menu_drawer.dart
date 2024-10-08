@@ -20,7 +20,8 @@ class MenuDrawer extends StatefulWidget {
 class _MenuDrawerState extends State<MenuDrawer> {
   final TextEditingController _passwordController = TextEditingController();
 
-  showRemoveAccountConfirmation({required BuildContext context, required String email}){
+  showRemoveAccountConfirmation(
+      {required BuildContext context, required String email}) {
     showDialog(
       barrierDismissible: false,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -47,7 +48,9 @@ class _MenuDrawerState extends State<MenuDrawer> {
                   ),
                   textAlign: TextAlign.start,
                 ),
-                SizedBox(height: 15,),
+                SizedBox(
+                  height: 15,
+                ),
                 TextFieldComponent(
                   obscureText: true,
                   controller: _passwordController,
@@ -65,9 +68,14 @@ class _MenuDrawerState extends State<MenuDrawer> {
           actions: [
             ElevatedButton(
               onPressed: () {
-                AuthService().deleteAccount(password: _passwordController.text).then((String? erro){
-                  if(erro == null){
-                    showSnackBar(context: context, message: 'Conta excluída!', backgroundColor: Colors.green);
+                AuthService()
+                    .deleteAccount(password: _passwordController.text)
+                    .then((String? erro) {
+                  if (erro == null) {
+                    showSnackBar(
+                        context: context,
+                        message: 'Conta excluída!',
+                        backgroundColor: Colors.green);
                     Navigator.push(
                       context,
                       PageTransition(
@@ -76,12 +84,11 @@ class _MenuDrawerState extends State<MenuDrawer> {
                         type: PageTransitionType.fade,
                       ),
                     );
-                  }else{
+                  } else {
                     // snackbar / outro dialog / textfield
                     log(erro);
                   }
                 });
-
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green.shade400,
@@ -91,7 +98,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
               child: const Text(
                 'Confirmar',
                 style:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(width: 15),
@@ -108,7 +115,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
               child: const Text(
                 'Cancelar',
                 style:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -121,35 +128,27 @@ class _MenuDrawerState extends State<MenuDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Colors.white,
-      child: Stack(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+      child: Container(
+        padding: EdgeInsets.all(5.0),
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 100, bottom: 50),
+                  width: 250,
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                  ),
+                ),
             Container(
-              margin: const EdgeInsets.only(top: 50),
-              width: 250,
-              child: Image.asset(
-                'assets/images/logo.png',
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                color: Colors.white,
               ),
-            ),
-          ],
-        ),
-        Positioned(
-          top: 140,
-          right: 0,
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: 350,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 50, top: 30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ListTileComponent(
-                      icon: Icons.person, label: 'Meu Perfil', onTap: () {}),
                   ListTileComponent(
                       icon: FontAwesomeIcons.cow,
                       label: 'Meus Animais',
@@ -157,7 +156,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                         Navigator.push(
                           context,
                           PageTransition(
-                              child: const AnimalsPage(),
+                            child: const AnimalsPage(),
                             childCurrent: const MenuDrawer(),
                             type: PageTransitionType.fade,
                           ),
@@ -167,23 +166,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
                       icon: FontAwesomeIcons.chartSimple,
                       label: 'Minhas Dietas',
                       onTap: () {}),
-                  ListTileComponent(
-                      icon: FontAwesomeIcons.dollarSign,
-                      label: 'Custos / Ganhos',
-                      onTap: () {}),
-                  ListTileComponent(
-                      icon: FontAwesomeIcons.globe,
-                      label: 'Sincronizar',
-                      onTap: () {}),
-                  ListTileComponent(
-                      icon: FontAwesomeIcons.solidPenToSquare,
-                      label: 'Quero ser assinante',
-                      onTap: () {}),
+
                   ListTileComponent(
                       icon: FontAwesomeIcons.rightToBracket,
                       label: 'Sair',
                       onTap: () {
-                        AuthService().logout().then((_){
+                        AuthService().logout().then((_) {
                           Navigator.push(
                             context,
                             PageTransition(
@@ -198,15 +186,19 @@ class _MenuDrawerState extends State<MenuDrawer> {
                       icon: FontAwesomeIcons.close,
                       label: 'Deletar conta',
                       onTap: () {
-                        showRemoveAccountConfirmation(context: context, email: '');
-                      }
-                      ),
+                        showRemoveAccountConfirmation(
+                            context: context, email: '');
+                      }),
+                  ListTileComponent(
+                      icon: FontAwesomeIcons.solidPenToSquare,
+                      label: 'Quero ser assinante',
+                      onTap: () {}),
                 ],
               ),
             ),
-          ),
+          ]),
         ),
-      ]),
+      ),
     );
   }
 }

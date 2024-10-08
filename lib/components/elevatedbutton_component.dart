@@ -21,14 +21,14 @@ class ElevatedButtonComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(20.0),
       width: width,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
             backgroundColor: color,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(30),
             )),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -37,8 +37,8 @@ class ElevatedButtonComponent extends StatelessWidget {
               text!,
               style: TextStyle(
                   color: colorText,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
+                  fontSize: 16,
+                  ),
             ),
           ],
         ),

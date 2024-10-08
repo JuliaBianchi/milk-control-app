@@ -23,26 +23,37 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool passwordVisible = true;
   bool passwordConfirmVisible = true;
+  bool isLoading = false;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
-  submitRegister(context) {
+
+
+  Future<void> submitRegister(context) async {
     final isValid = _registerKey.currentState!.validate();
 
     if (!isValid) {
       return;
     }
 
+    setState(() {
+      isLoading = true;
+    });
+
     authService.register(
             email: _emailController.text,
             password: _passwordController.text,
             name: _nameController.text,
             phone: _phoneController.text).then((String? erro) {
+
+      setState(() {
+        isLoading = false;
+      });
+
       if (erro != null) {
         showSnackBar( context: context, message: erro, backgroundColor: Colors.red);
       } else {
@@ -66,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Center(
           child: Column(

@@ -9,7 +9,8 @@ class ContainerTitlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
+      height: 180,
+      padding: EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
@@ -17,6 +18,7 @@ class ContainerTitlePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               LimitedBox(
+                maxWidth:  350,
                 child: Text(title,
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
@@ -34,7 +36,7 @@ class ContainerTitlePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: 150,
+                width: 200,
                 height: 5,
                 child: Divider(
                   color: Colors.grey.shade300,
@@ -48,10 +50,11 @@ class ContainerTitlePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               LimitedBox(
+                maxWidth: 350,
                 child: Text(subtitle,
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
-                    fontSize: 15,
+                    fontSize: 18,
                     color: Color(0XFF4F4F4F),
                   ),
                   textAlign: TextAlign.center,

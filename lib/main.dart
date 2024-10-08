@@ -6,6 +6,8 @@ import 'package:milkcontrolapp/pages/home_page.dart';
 import 'package:milkcontrolapp/pages/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:milkcontrolapp/provider/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
       SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
@@ -24,10 +26,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           textTheme: GoogleFonts.interTextTheme(),
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff001F3D)),
-          useMaterial3: true),
+          // colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff001F3D)),
+
+          useMaterial3: true
+      ),
       home: const RoteadorTelas(),
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('pt', 'BR'),  // Português Brasil
+      ],
       locale: const Locale('pt', 'BR'),
     );
   }

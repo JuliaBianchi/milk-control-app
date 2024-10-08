@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:milkcontrolapp/components/elevatedbutton_component.dart';
 import 'package:milkcontrolapp/components/snackbar_component.dart';
@@ -25,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isObscure = true;
+  bool isLoading = false;
 
   Future<void> login() async {
     final isValid = _formKey.currentState?.validate() ?? false;
@@ -33,22 +35,33 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    authService.login(email: emailController.text.trim(), password: passwordController.text.trim()).then((String? erro){
+    setState(() {
+      isLoading = true; // Inicia o carregamento
+    });
 
-    if(erro == null){
-      Navigator.push(
-        context,
-        PageTransition(
-          child: const HomePage(),
-          childCurrent: const LoginPage(),
-          type: PageTransitionType.fade,
-        ),
-      );
-    }else{
-      showSnackBar(context: context, message: erro, backgroundColor: Colors.red);
-    }
-    }
-    );
+    authService
+        .login(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim())
+        .then((String? erro) {
+      setState(() {
+        isLoading = false; // Para o carregamento quando o login termina
+      });
+
+      if (erro == null) {
+        Navigator.push(
+          context,
+          PageTransition(
+            child: const HomePage(),
+            childCurrent: const LoginPage(),
+            type: PageTransitionType.fade,
+          ),
+        );
+      } else {
+        showSnackBar(
+            context: context, message: erro, backgroundColor: Colors.red);
+      }
+    });
   }
 
   @override
@@ -121,20 +134,24 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (_){
+                    onFieldSubmitted: (_) {
                       login();
                     },
                   ),
-                  ElevatedButtonComponent(
-                      text: 'Entrar',
-                      colorText: Colors.white,
-                      width: 150,
-                      color: const Color(0xff1C6E8C),
-                      onPressed: () async {
-                        login();
-
-                      }),
-                  const SizedBox(height: 50),
+                  isLoading
+                      ? const Padding(
+                        padding: EdgeInsets.only(top: 25),
+                        child: SpinKitFadingCircle(color: Color(0xff1C6E8C)),
+                      )
+                      : ElevatedButtonComponent(
+                          text: 'Entrar',
+                          colorText: Colors.white,
+                          width: 150,
+                          color: const Color(0xff1C6E8C),
+                          onPressed: () async {
+                            login();
+                          }),
+                  const SizedBox(height: 25),
                   TextButton(
                     onPressed: () => Navigator.push(
                       context,

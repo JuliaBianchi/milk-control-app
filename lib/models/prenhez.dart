@@ -1,6 +1,6 @@
 class Prenhez {
   final String? animal;
-  final String? data;
+  final DateTime? data;
   final String? observacao;
 
   Prenhez({this.animal, this.data, this.observacao});

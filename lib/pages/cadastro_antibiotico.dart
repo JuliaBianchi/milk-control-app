@@ -1,15 +1,13 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:milkcontrolapp/models/antibiotico.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-
 import '../components/datepicker_component.dart';
 import '../components/elevatedbutton_component.dart';
 import '../components/textfield_component.dart';
-import '../components/timepicker_component.dart';
 import '../components/title_component.dart';
-import '../models/animal.dart';
 
 class CadastroAntibiotico extends StatefulWidget {
   const CadastroAntibiotico({super.key});
@@ -20,32 +18,35 @@ class CadastroAntibiotico extends StatefulWidget {
 
 class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
   TextEditingController dateInputController = TextEditingController();
-  TextEditingController timeInputController = TextEditingController();
   TextEditingController obsController = TextEditingController();
   TextEditingController diasCarenciaController = TextEditingController();
   TextEditingController nomeMedicacaoController = TextEditingController();
 
-
   String? selectedAnimal;
   int? selectedAplicacao;
+  int? selectedTurno;
 
   cadastrarAntibiotico(){
-    Antibiotico newAntibiotico = Antibiotico(
+
+    DateTime parsedDate = DateFormat("dd/MM/yyyy").parse(dateInputController.text);
+
+    Antibiotico antibiotico = Antibiotico(
       selectedAnimal,
-      dateInputController.text,
-      timeInputController.text,
+      parsedDate,
       selectedAplicacao,
       nomeMedicacaoController.text,
       int.tryParse(diasCarenciaController.text),
       obsController.text,
+      selectedTurno,
     );
 
-    print(newAntibiotico);
+    print(antibiotico);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -54,7 +55,7 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
               height: 120,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
-              color: Color(0xff194a7a),
+              color: const Color(0xff194a7a),
             ),
             Row(
               children: [
@@ -95,7 +96,7 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
                         style: TextStyle(
                             color: Colors.grey.shade700,
                             fontWeight: FontWeight.bold,
-                            fontSize: 15),
+                            fontSize: 16),
                       ),
                     ],
                   ),
@@ -106,11 +107,11 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey.shade200),
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:  BorderSide(color: Colors.grey.shade200),
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide:  BorderSide(color: Colors.blue.shade100),
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
                       prefixIcon: const Icon(Icons.search),
                       prefixIconColor: Colors.grey.shade700,
@@ -133,7 +134,7 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       errorBorder: OutlineInputBorder(
-                        borderSide:  BorderSide(color: Colors.red),
+                        borderSide:  const BorderSide(color: Colors.red),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       filled: true,
@@ -146,14 +147,10 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
                     : null,
               ),
             ),
-            SizedBox(height: 15,),
+            const SizedBox(height: 15,),
             DatePickerComponent(
               dateInputController: dateInputController,
               initialDate: DateTime.now(),
-            ),
-            TimePickedComponent(
-              timeInputController: timeInputController,
-              initialTime: TimeOfDay.now()
             ),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
@@ -165,7 +162,7 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
                     children: [
                       Text('Aplicação realizada antes ou depois da ordenha:', style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        fontSize: 15,
+                        fontSize: 16,
                         color: Color(0XFF4F4F4F),
                       ),),
                     ],
@@ -185,13 +182,56 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
                         inactiveBgColor: Colors.grey.shade300,
                         inactiveFgColor: Colors.grey[900],
                         totalSwitches: 2,
+                        fontSize: 16,
                         labels: const ['Antes', 'Depois'],
-                        activeBgColors: [
-                          const [Colors.blue],
-                          const [Colors.blue],
+                        activeBgColors: const [
+                          [Colors.blue],
+                          [Colors.blue],
                         ],
                         onToggle: (index) {
                            selectedAplicacao = index;
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('Turno em que foi feita a aplicação:', style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: Color(0XFF4F4F4F),
+                      ),),
+                    ],
+                  ),
+
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ToggleSwitch(
+                        minWidth: 150.0,
+                        initialLabelIndex: 0,
+                        cornerRadius: 20.0,
+                        activeFgColor: Colors.white,
+                        inactiveBgColor: Colors.grey.shade300,
+                        inactiveFgColor: Colors.grey[900],
+                        totalSwitches: 2,
+                        labels: const ['Manhã', 'Tarde'],
+                        fontSize: 16,
+                        activeBgColors: const [
+                          [Colors.blue],
+                          [Colors.blue],
+                        ],
+                        onToggle: (index) {
+                          selectedTurno = index;
                         },
                       ),
                     ],
@@ -225,12 +265,12 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
               Row(
                 children: [
                   SvgPicture.asset('assets/icons/exclamation-circle.svg'),
-                  SizedBox(width: 10.0),
+                  const SizedBox(width: 10.0),
                   const Text(
                     'Observações',
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 14,
+                        fontSize: 16,
                         color: Colors.black),
                   ),
                 ],
@@ -273,7 +313,7 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
                       maxLines: 5,
                       style: const TextStyle(
                         fontWeight: FontWeight.w400,
-                        fontSize: 14,
+                        fontSize: 16,
                         color: Color(0xFF454C52),
                       ),
                       cursorColor: const Color(0xFF454C52),
@@ -297,7 +337,7 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
 
                 },
                 text: 'Cadastrar',
-                width: 150,
+                width: 250,
                 color: const Color(0xff194a7a),
                 colorText: Colors.white,
               ),

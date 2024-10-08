@@ -1,17 +1,17 @@
 class Antibiotico {
   final String? animal;
-  final String? data;
-  final String? horario;
+  final DateTime? data;
   final int? aplicacao;
+  final int? turno;
   final String? nomeMedicacao;
   final int? diasCarencia;
   final String? observacao;
 
-  Antibiotico(this.animal, this.data, this.horario, this.aplicacao,
-      this.nomeMedicacao, this.diasCarencia, this.observacao);
+  Antibiotico(this.animal, this.data, this.aplicacao,
+      this.nomeMedicacao, this.diasCarencia, this.observacao, this.turno);
 
   @override
   String toString() {
-    return 'Antibiotico{animal: $animal, data: $data, horario: $horario, aplicacao: $aplicacao, nomeMedicacao: $nomeMedicacao, diasCarencia: $diasCarencia, observacao: $observacao}';
+    return 'Antibiotico{animal: $animal, data: $data, aplicacao: $aplicacao, turno: $turno, nomeMedicacao: $nomeMedicacao, diasCarencia: $diasCarencia, observacao: $observacao}';
   }
 }

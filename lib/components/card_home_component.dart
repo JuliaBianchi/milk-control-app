@@ -46,7 +46,7 @@ class CardHomeComponent extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Text(
             label,
-            style: const TextStyle(fontSize: 15, color: Colors.black),
+            style: const TextStyle(fontSize: 18, color: Colors.black),
             textAlign: TextAlign.center,
           ),
         ),

@@ -18,11 +18,11 @@ class ListTileComponent extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       child: ListTile(
           dense: false,
-          leading: Icon(icon, color: Color(0xff001F3D), size: 22),
+          leading: Icon(icon, color: const Color(0xff001F3D), size: 20),
           title: Text(
             label,
-            style: TextStyle(
-              fontSize: 15,
+            style: const TextStyle(
+              fontSize: 18,
               color: Color(0xff001F3D),
               fontWeight: FontWeight.w500,
             ),

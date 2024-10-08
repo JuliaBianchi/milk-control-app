@@ -39,7 +39,6 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
         const DropdownMenuItem(value: '3', child: Text("De 7 meses à 1 ano")),
         const DropdownMenuItem(value: '4', child: Text("De 1 ano até 2 anos")),
         const DropdownMenuItem(value: '5', child: Text("Acima de 2 anos")),
-
       ];
 
     return menuItems;
@@ -51,6 +50,7 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
 
   AnimaisService service = AnimaisService();
 
+
   void registerAnimal() {
     Animal newAnimal = Animal(
       nomeAnimalController.text,
@@ -61,7 +61,6 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
       selectedGender,
     );
 
-    service.adicionarAnimal(newAnimal);
     print(newAnimal);
   }
 
@@ -73,6 +72,7 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -83,7 +83,7 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
               height: 120,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
-              color: Color(0xff194a7a),
+              color: const Color(0xff194a7a),
             ),
             Row(
               children: [
@@ -104,18 +104,19 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
             Form(
               child: Column(
                 children: [
+                  // TextFieldComponent(
+                  //   hintText: 'Código',
+                  //   keyboardType: TextInputType.text,
+                  //   controller: identificacaoAnimalController,
+                  //   prefixIcon: Image.asset('assets/icons/clipboard-document-list.png'),
+                  // ),
                   TextFieldComponent(
                     hintText: 'Nome do animal',
                     keyboardType: TextInputType.name,
                     controller: nomeAnimalController,
                     prefixIcon: Image.asset('assets/icons/icons8-cow-24.png'),
                   ),
-                  TextFieldComponent(
-                    hintText: 'Identificação',
-                    keyboardType: TextInputType.text,
-                    controller: identificacaoAnimalController,
-                    prefixIcon: Image.asset('assets/icons/clipboard-document-list.png'),
-                  ),
+
                   TextFieldComponent(
                     hintText: 'Raça',
                     keyboardType: TextInputType.text,
@@ -138,7 +139,7 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
                     children: [
                       Text('Selecione a faixa etária do animal:', style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        fontSize: 15,
+                        fontSize: 16,
                         color: Color(0XFF4F4F4F),
                       ),),
                     ],
@@ -173,7 +174,7 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
                           style: TextStyle(
                             color: Colors.grey.shade600,
                             fontWeight: FontWeight.bold,
-                            fontSize: 15,
+                            fontSize: 16,
                           ),
                           icon: const Icon(Icons.arrow_drop_down_sharp),
                           underline: Container(),
@@ -203,7 +204,7 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
                     children: [
                       Text('Selecione a categoria do animal:', style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        fontSize: 15,
+                        fontSize: 16,
                         color: Color(0XFF4F4F4F),
                       ),),
                     ],
@@ -238,7 +239,7 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
                           style: TextStyle(
                             color: Colors.grey.shade600,
                             fontWeight: FontWeight.bold,
-                            fontSize: 15,
+                            fontSize: 16,
                           ),
                           icon: const Icon(Icons.arrow_drop_down_sharp),
                           underline: Container(),
@@ -268,6 +269,7 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
               inactiveFgColor: Colors.grey[900],
               totalSwitches: 2,
               labels: const ['Macho', 'Fêmea'],
+              fontSize: 16,
               icons: const [FontAwesomeIcons.mars, FontAwesomeIcons.venus],
               activeBgColors: [
                 const [Colors.blue],
@@ -278,13 +280,13 @@ class _AnimalRegistrationState extends State<AnimalRegistration> {
               },
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 25),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: ElevatedButtonComponent(
                 onPressed: () {
                   registerAnimal();
                 },
                 text: 'Cadastrar',
-                width: 150,
+                width: 250,
                 color: const Color(0xff194a7a),
                 colorText: Colors.white,
               ),
