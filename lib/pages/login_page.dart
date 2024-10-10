@@ -64,8 +64,15 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width);
+    print(MediaQuery.of(context).size.width);
+
+    var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: const Color(0xfff7f7ff),
       body: SingleChildScrollView(
@@ -77,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Image.asset(
                   'assets/images/background-png.png',
-                  height: 500,
+                  height: width,
                   fit: BoxFit.cover,
                 )
               ],

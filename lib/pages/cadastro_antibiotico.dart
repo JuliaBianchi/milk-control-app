@@ -75,7 +75,7 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
             ),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: DropdownSearch<String>(
                 items: (filter, infiniteScrollProps) =>
                 ["Menu", "Dialog", "Modal", "BottomSheet"],
@@ -123,6 +123,7 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
                   decoration: InputDecoration(
                       labelText: 'Selecione seu animal',
                       labelStyle: TextStyle(
+                        fontSize: 18,
                         color: Colors.grey.shade700,
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -153,8 +154,9 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
               initialDate: DateTime.now(),
             ),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+              margin: const EdgeInsets.only(left: 20),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -164,7 +166,9 @@ class _CadastroAntibioticoState extends State<CadastroAntibiotico> {
                         fontWeight: FontWeight.w700,
                         fontSize: 16,
                         color: Color(0XFF4F4F4F),
-                      ),),
+                      ),
+
+                      ),
                     ],
                   ),
                   const SizedBox(

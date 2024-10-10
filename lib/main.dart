@@ -6,14 +6,21 @@ import 'package:milkcontrolapp/pages/home_page.dart';
 import 'package:milkcontrolapp/pages/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:milkcontrolapp/provider/auth_provider.dart';
+import 'package:milkcontrolapp/provider/animais_provider.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
       SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+      runApp(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => AnimalProvider()),
+          ],
+          child: MyApp(),
+        ),
+      );
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +32,7 @@ class MyApp extends StatelessWidget {
       title: 'Milk Control',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          textTheme: GoogleFonts.interTextTheme(),
+          textTheme: GoogleFonts.notoSansTextTheme(),
           // colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff001F3D)),
 
           useMaterial3: true

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class ContainerTitlePage extends StatelessWidget {
   final String title;
-  final String subtitle;
+  final String? subtitle;
 
   const ContainerTitlePage({super.key, required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 180,
+      height: subtitle != '' ? 180 : 100,
       padding: EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -45,24 +45,26 @@ class ContainerTitlePage extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              LimitedBox(
-                maxWidth: 350,
-                child: Text(subtitle,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: Color(0XFF4F4F4F),
+
+          if(subtitle != '')
+            const SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LimitedBox(
+                  maxWidth: 350,
+                  child: Text(subtitle!,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      color: Color(0XFF4F4F4F),
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
                   ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
         ],
       ),
     );

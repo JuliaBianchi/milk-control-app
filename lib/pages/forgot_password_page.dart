@@ -29,7 +29,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
           ),
           content: SizedBox(
-            height: 100,
+            height: 150,
             child: Column(
               children: [
                 const Text(
